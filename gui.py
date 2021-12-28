@@ -18,12 +18,12 @@ list_books = list_books.title
 similarity = pickle.load(open('similarity.pkl','rb'))
 
 def content_based_recommender(title,cosine_sim_cv=similarity,df=df,indices=indices):
-    idx = indices[title]
-    sim_scores = list(enumerate(cosine_sim_cv[idx]))
-    sim_scores = sorted(sim_scores, key = lambda x: x[1],reverse=True)
-    sim_scores = sim_scores[1:11]
-    book_indices = [i[0] for i in sim_scores]
-    return df[['title','author']].iloc[book_indices]
+	idx = indices[title]
+	sim_scores = list(enumerate(cosine_sim_cv[idx]))
+	sim_scores = sorted(sim_scores, key = lambda x: x[1],reverse=True)
+	sim_scores = sim_scores[1:11]
+	book_indices = [i[0] for i in sim_scores]
+	return df[['title','author']].iloc[book_indices]
 
 
 st.sidebar.title('Sistem Rekomendasi Buku')
@@ -34,8 +34,27 @@ if st.sidebar.button('Rekomendasi') :
   st.markdown('#### Hasil Rekomendasi')
   hasil_rekomendasi_df = content_based_recommender(selected_book)
   
-  for i in range(len(hasil_rekomendasi_df)) : 
-      st.text(hasil_rekomendasi_df.iloc[i].title)
+  for i in range(0, len(hasil_rekomendasi_df), 3) : 
+    col1, col2, col3 = st.columns(3)
+
+    col1.markdown('#### {}'.format(hasil_rekomendasi_df.iloc[i].title))
+    col1.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i].author))
+    
+    print(i + i in range(0, len(hasil_rekomendasi_df)))
+      
+    if i + 1 in range(0, len(hasil_rekomendasi_df)) : 
+      col2.markdown('#### {}'.format(hasil_rekomendasi_df.iloc[i + 1].title))
+      col2.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i].author))
+    
+    if i + 2 in range(0, len(hasil_rekomendasi_df)) : 
+      col3.markdown('#### {}'.format(hasil_rekomendasi_df.iloc[i + 2].title))
+      col3.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i].author))
+        
+    st.text("")
+    st.text("")
+    st.text("")
+    st.text("")
+    # st.text(hasil_rekomendasi_df.iloc[i].title)
       
 #   col1, col2, col3 = st.columns(3)
 #   with col1:
