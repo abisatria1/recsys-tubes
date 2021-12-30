@@ -9,7 +9,6 @@ import pickle
 
 list_books_dict = pickle.load(open('book_dict.pkl','rb'))
 df = pd.DataFrame(list_books_dict)
-
 indices = pd.Series(df.index,index=df['title'])
 
 list_books = df.sort_values(by='title')
@@ -23,7 +22,7 @@ def content_based_recommender(title,cosine_sim_cv=similarity,df=df,indices=indic
 	sim_scores = sorted(sim_scores, key = lambda x: x[1],reverse=True)
 	sim_scores = sim_scores[1:11]
 	book_indices = [i[0] for i in sim_scores]
-	return df[['title','author']].iloc[book_indices]
+	return df[['title','author', 'language', 'avg_rating']].iloc[book_indices]
 
 
 st.sidebar.title('Sistem Rekomendasi Buku')
@@ -39,16 +38,20 @@ if st.sidebar.button('Rekomendasi') :
 
     col1.markdown('#### {}'.format(hasil_rekomendasi_df.iloc[i].title))
     col1.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i].author))
-    
-    print(i + i in range(0, len(hasil_rekomendasi_df)))
+    col1.markdown("Language : {}".format(hasil_rekomendasi_df.iloc[i].language))
+    col1.markdown("Average Rating : {}".format(hasil_rekomendasi_df.iloc[i].avg_rating))
       
     if i + 1 in range(0, len(hasil_rekomendasi_df)) : 
       col2.markdown('#### {}'.format(hasil_rekomendasi_df.iloc[i + 1].title))
-      col2.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i].author))
+      col2.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i + 1].author))
+      col2.markdown("Language : {}".format(hasil_rekomendasi_df.iloc[i + 1].language))
+      col2.markdown("Average Rating : {}".format(hasil_rekomendasi_df.iloc[i + 1].avg_rating))
     
     if i + 2 in range(0, len(hasil_rekomendasi_df)) : 
       col3.markdown('#### {}'.format(hasil_rekomendasi_df.iloc[i + 2].title))
-      col3.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i].author))
+      col3.markdown("Author : {}".format(hasil_rekomendasi_df.iloc[i + 2].author))
+      col3.markdown("Language : {}".format(hasil_rekomendasi_df.iloc[i + 2].language))
+      col3.markdown("Average Rating : {}".format(hasil_rekomendasi_df.iloc[i + 2].avg_rating))
         
     st.text("")
     st.text("")
